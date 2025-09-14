@@ -19,7 +19,7 @@ from strands_tools import current_time, shell
 
 # Set up basic logging configuration
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.WARNING,
     format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     stream=sys.stdout,
 )
