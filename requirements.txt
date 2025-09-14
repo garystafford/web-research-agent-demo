@@ -1,0 +1,4 @@
+mcp
+strands-agents
+strands-agents-builder
+strands-agents-tools
