@@ -11,6 +11,25 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 - **Tavily** is a web search engine and API designed for AI agents and LLMs. It delivers fast, real-time, and accurate web information optimized for Retrieval Augmented Generation (RAG) workflows. Tavily automates searching, scraping, filtering, and content extraction via a single API call, making it easy to enrich AI apps with up-to-date, high-quality online content.
 - **Tavily MCP Server** allows you to use the Tavily API from your MCP clients. It provides a suite of tools, including search, extract, map, and crawl, offering real-time web search, intelligent data extraction from web pages, powerful web mapping (creating a structured map of websites), and a web crawler that systematically explores sites.
 
+## Getting Started on Mac
+
+```bash
+ollama pull qwen3:4b # and/or other sizes
+
+git clone https://github.com/garystafford/web-research-agent-demo.git
+
+cd web-research-agent-demo/
+
+mv env.txt .env # update values
+
+python -m pip install virtualenv -Uq
+python -m venv .venv
+source .venv/bin/activate
+
+python -m pip install pip -Uq
+python -m pip install -r requirements.txt -Uq
+```
+
 ---
 
 _The contents of this repository represent my viewpoints and not those of my past or current employers, including Amazon Web Services (AWS). All third-party libraries, modules, plugins, and SDKs are the property of their respective owners._
