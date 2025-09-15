@@ -48,7 +48,8 @@ conversation_manager = SlidingWindowConversationManager(
 )
 
 # Define a system prompt for the agent
-main_system_prompt = "You are a helpful assistant that can search the internet to provide information and answer questions based on the latest news and data."
+main_system_prompt = """You are a helpful assistant that reviews multiple Internet sources to find the most relevant content from each source, 
+delivering concise, ready-to-use information"""
 
 # Initialize the MCP client for Tavily with your API key
 streamable_http_mcp_client = MCPClient(
