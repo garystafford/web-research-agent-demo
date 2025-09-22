@@ -21,13 +21,27 @@ git clone https://github.com/garystafford/web-research-agent-demo.git
 cd web-research-agent-demo/
 
 mv env.txt .env # update values
+```
 
+Using `pip`:
+
+```bash
 python -m pip install virtualenv -Uq
 python -m venv .venv
 source .venv/bin/activate
 
 python -m pip install pip -Uq
 python -m pip install -r requirements.txt -Uq
+```
+
+Using `uv`:
+
+```bash
+python -m pip install uv -Uq --break-system-packages
+uv venv .venv
+source .venv/bin/activate
+
+uv pip install -r requirements.txt -Uq
 ```
 
 ---
