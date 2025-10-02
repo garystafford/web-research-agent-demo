@@ -64,21 +64,37 @@ Create a free Tavily account to get your API key: [https://www.tavily.com/](http
 mv env.txt .env # update values
 ```
 
-### Configure Python Environment and Run Agent
+### Configure Python Environment
 
-I have converted the project from `pip` to `uv` and `make`.
+The project has been converted from `pip` to `uv` and `make`. Install `uv` and `make`.
 
 ```bash
 brew install uv
 brew install make
 
+uv --version
+make --version
+```
+
+Create and activate a Python virtual environment, then install the required packages.
+
+```bash
 make source
 source .venv/bin/activate
+
 make install
+uv tree --depth 1
+```
 
-# optional: upgrade packages
+Optionally, upgrade the packages.
+
+```bash
 make upgrade
+```
 
+### Run the Agent
+
+```bash
 make run
 ```
 
