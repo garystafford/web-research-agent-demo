@@ -13,17 +13,35 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 
 ## Getting Started on Mac
 
+### Ollama Models
+
+This project assumes you already have Ollama installed.
+
 ```bash
 ollama pull qwen3:14b # and/or other sizes
+```
 
+### GitHub Repository
+
+Clone this project's GitHub repository.
+
+```bash
 git clone https://github.com/garystafford/web-research-agent-demo.git
 
 cd web-research-agent-demo/
+```
 
+### Tavily API Key
+
+Create a free Tavily account to get your API key: [https://www.tavily.com/](https://www.tavily.com/). Update the `.env` file with your API key.
+
+```bash
 mv env.txt .env # update values
 ```
 
-Using `uv` amd `make`:
+### Configure Python Environment and Run Agent
+
+I have converted the project from `pip` to `uv` and `make`.
 
 ```bash
 brew install uv
