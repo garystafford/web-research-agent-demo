@@ -14,7 +14,7 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 ## Getting Started on Mac
 
 ```bash
-ollama pull qwen3:4b # and/or other sizes
+ollama pull qwen3:14b # and/or other sizes
 
 git clone https://github.com/garystafford/web-research-agent-demo.git
 
@@ -23,25 +23,20 @@ cd web-research-agent-demo/
 mv env.txt .env # update values
 ```
 
-Using `pip`:
+Using `uv` amd `make`:
 
 ```bash
-python -m pip install virtualenv -Uq
-python -m venv .venv
+brew install uv
+brew install make
+
+make source
 source .venv/bin/activate
+make install
 
-python -m pip install pip -Uq
-python -m pip install -r requirements.txt -Uq
-```
+# Optional: upgrade packages
+make upgrade
 
-Using `uv`:
-
-```bash
-python -m pip install uv -Uq --break-system-packages
-uv venv .venv
-source .venv/bin/activate
-
-uv pip install -r requirements.txt -Uq
+make run
 ```
 
 ---

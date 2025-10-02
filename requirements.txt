@@ -1,5 +1,0 @@
-mcp
-python-dotenv
-strands-agents
-strands-agents-builder
-strands-agents-tools

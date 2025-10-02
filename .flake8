@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 200
+exclude = .git,__pycache__,build,dist
+# Ignore some errors that conflict with black formatting
+ignore = E203, W501, E503
+# E203: whitespace before ':'
+# W501: line too long
+# W503: line break before binary operator

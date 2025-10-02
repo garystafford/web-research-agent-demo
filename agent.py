@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file
 load_dotenv()
-MODEL_ID = os.getenv("MODEL_ID", "qwen3:4b")
+MODEL_ID = os.getenv("MODEL_ID", "qwen3:30b")
 TEMPERATURE = float(os.getenv("TEMPERATURE", 0.2))
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 
@@ -40,7 +40,7 @@ model = OllamaModel(
     keep_alive="10m",
 )
 
-logger.info(f"Model configuration: {model.config}")
+logger.debug(f"Model configuration: {model.config}")
 
 # Create a conversation manager
 conversation_manager = SlidingWindowConversationManager(
