@@ -33,7 +33,7 @@ make source
 source .venv/bin/activate
 make install
 
-# Optional: upgrade packages
+# optional: upgrade packages
 make upgrade
 
 make run
