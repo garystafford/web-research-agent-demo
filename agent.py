@@ -307,8 +307,6 @@ You are a expert research assistant that can search the internet to provide info
         5. Cite your sources when providing information from the web.
         6. Always respond in markdown format for better readability."""
         
-        print(system_prompt)
-
         # Create an agent with tools
         tools = [current_time, shell, self.mcp_client.list_tools_sync()]
 

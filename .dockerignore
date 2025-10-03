@@ -1,0 +1,61 @@
+# Git
+.git
+.gitignore
+.github
+
+# Environment variables
+.env
+.env.*
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Other
+.flake8
+env.txt
+LICENSE
+Makefile
+.env
+README.md
+previews/

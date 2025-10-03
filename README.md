@@ -147,6 +147,22 @@ make upgrade
 make run
 ```
 
+### Docker
+
+You can also run the project using Docker. First, build the Docker image.
+
+```bash
+docker buildx build -t web-research-agent:1.0.0 .
+```
+
+Then, run the Docker container.
+
+```bash
+docker run -it --rm \
+  -e TAVILY_API_KEY=your-api-key \
+  web-research-agent:1.0.0                                
+```
+
 ### Example Prompts
 
 Try these example prompts:
