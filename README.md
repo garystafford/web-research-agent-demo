@@ -5,7 +5,7 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 ## System Architecture
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground': '#ffffff', 'primaryColor': '#e7effe' }}}%%
+%%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground': '#ffffff', 'primaryColor': '#e7effe', 'primaryBorderColor': '#cccccc', 'secondaryBorderColor': '#cccccc', 'tertiaryBorderColor': '#cccccc', 'mainBkg': '#ffffff' }}}%%
 flowchart TD
     %% Local Resources
     User[User] -->|Query| Terminal[Terminal Interface]
