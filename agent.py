@@ -5,12 +5,14 @@
 # https://github.com/tavily-ai/tavily-mcp
 # https://strandsagents.com/latest/documentation/docs/user-guide/concepts/tools/mcp-tools/#2-streamable-http
 
+import atexit
 import logging
 import os
 import readline  # Add readline for proper terminal input handling
 import signal
 import sys
-from typing import Any, Dict, Union
+from dataclasses import dataclass
+from typing import Any, Optional, Set, TypedDict, Union
 
 from dotenv import load_dotenv
 from mcp.client.streamable_http import streamablehttp_client
@@ -21,15 +23,16 @@ from strands.tools.mcp.mcp_client import MCPClient
 from strands_tools import current_time, shell
 
 
-# Terminal colors
+# Terminal colors using dataclass for more pythonic code
+@dataclass(frozen=True)
 class TermColors:
     """ANSI color codes for terminal output styling."""
 
-    RED = "\033[31m"
-    GREEN = "\033[32m"
-    BLUE = "\033[34m"
-    YELLOW = "\033[33m"
-    RESET = "\033[0m"
+    RED: str = "\033[31m"
+    GREEN: str = "\033[32m"
+    BLUE: str = "\033[34m"
+    YELLOW: str = "\033[33m"
+    RESET: str = "\033[0m"
 
 
 # Set up basic logging configuration
@@ -42,6 +45,7 @@ def setup_logging(log_level: str = "WARNING") -> logging.Logger:
     Returns:
         Logger instance
     """
+    # Using getattr with a default is more pythonic
     level = getattr(logging, log_level.upper(), logging.WARNING)
     logging.basicConfig(
         level=level,
@@ -51,8 +55,17 @@ def setup_logging(log_level: str = "WARNING") -> logging.Logger:
     return logging.getLogger(__name__)
 
 
+# Define a TypedDict for environment variables
+class EnvVars(TypedDict):
+    MODEL_ID: str
+    TEMPERATURE: float
+    TAVILY_API_KEY: str
+    OLLAMA_HOST: str
+    KEEP_ALIVE: str
+
+
 # Load environment variables with validation
-def load_environment_variables() -> Dict[str, Any]:
+def load_environment_variables() -> EnvVars:
     """Load and validate required environment variables.
 
     Returns:
@@ -63,17 +76,25 @@ def load_environment_variables() -> Dict[str, Any]:
     """
     load_dotenv()
 
-    env_vars = {
-        "MODEL_ID": os.getenv("MODEL_ID", "qwen3:14b"),
-        "TEMPERATURE": float(os.getenv("TEMPERATURE", 0.2)),
-        "TAVILY_API_KEY": os.getenv("TAVILY_API_KEY"),
-        "OLLAMA_HOST": os.getenv("OLLAMA_HOST", "http://localhost:11434"),
-        "KEEP_ALIVE": os.getenv("KEEP_ALIVE", "10m"),
-    }
+    # Define defaults and type conversion functions
+    model_id = os.getenv("MODEL_ID", "qwen3:14b")
+    temperature = float(os.getenv("TEMPERATURE", "0.2"))
+    tavily_api_key = os.getenv("TAVILY_API_KEY", "")
+    ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+    keep_alive = os.getenv("KEEP_ALIVE", "10m")
 
     # Validate required environment variables
-    if not env_vars["TAVILY_API_KEY"]:
+    if not tavily_api_key:
         raise ValueError("TAVILY_API_KEY environment variable is required")
+
+    # Create properly typed dictionary
+    env_vars: EnvVars = {
+        "MODEL_ID": model_id,
+        "TEMPERATURE": temperature,
+        "TAVILY_API_KEY": tavily_api_key,
+        "OLLAMA_HOST": ollama_host,
+        "KEEP_ALIVE": keep_alive,
+    }
 
     return env_vars
 
@@ -131,12 +152,9 @@ def process_input(user_input: str) -> Union[bool, str]:
     # Strip whitespace
     cleaned_input = user_input.strip()
 
-    # Check for exit commands
-    if cleaned_input.lower() in ["exit", "quit", "q", "bye"]:
-        return False
-
-    # Return processed input
-    return cleaned_input
+    # Check for exit commands (use a set for O(1) lookup)
+    exit_commands: Set[str] = {"exit", "quit", "q", "bye"}
+    return False if cleaned_input.lower() in exit_commands else cleaned_input
 
 
 # Format agent response
@@ -158,7 +176,8 @@ def format_response(response: Any, logger: logging.Logger) -> str:
             return str(response_text.split("</think>\n\n")[-1])
         return str(response_text)
     except (KeyError, IndexError) as e:
-        logger.warning(f"Error formatting response: {e}")
+        # Use !s formatter for cleaner error representation
+        logger.warning(f"Error formatting response: {e!s}")
         return "Sorry, I couldn't process that response correctly."
 
 
@@ -208,28 +227,32 @@ def run_interactive_loop(agent: Agent, logger: logging.Logger) -> None:
             # Display response
             print(f"\n{TermColors.GREEN}{formatted_response}{TermColors.RESET}")
 
-            # Log metrics at debug level
-            logger.debug(f"Agent metrics: {response.metrics}")
+            # Log metrics at debug level using repr for complex objects
+            logger.debug(f"Agent metrics: {repr(response.metrics)}")
 
         except KeyboardInterrupt:
             print(
                 f"\n\n{TermColors.YELLOW}Execution interrupted. Exiting...{TermColors.RESET}"
             )
             break
-        except ConnectionError as e:
-            print(f"\n{TermColors.RED}Connection error: {str(e)}{TermColors.RESET}")
-            print(
-                f"{TermColors.RED}Check if Ollama is running and try again.{TermColors.RESET}"
-            )
-        except ValueError as e:
-            print(f"\n{TermColors.RED}Value error: {str(e)}{TermColors.RESET}")
-            print(
-                f"{TermColors.RED}Please check your input and try again.{TermColors.RESET}"
-            )
+        # Group related exceptions together with more pythonic error handling
+        except (ConnectionError, ValueError) as e:
+            error_type = "Connection" if isinstance(e, ConnectionError) else "Value"
+            print(f"\n{TermColors.RED}{error_type} error: {e!s}{TermColors.RESET}")
+
+            if isinstance(e, ConnectionError):
+                print(
+                    f"{TermColors.RED}Check if Ollama is running and try again.{TermColors.RESET}"
+                )
+            else:
+                print(
+                    f"{TermColors.RED}Please check your input and try again.{TermColors.RESET}"
+                )
         except Exception as e:
-            print(f"\n{TermColors.RED}An error occurred: {str(e)}{TermColors.RESET}")
+            print(f"\n{TermColors.RED}An error occurred: {e!s}{TermColors.RESET}")
             print(f"{TermColors.RED}Please try a different request.{TermColors.RESET}")
-            logger.error(f"Unexpected error: {str(e)}", exc_info=True)
+            # Use !r format specifier for better error representation
+            logger.error(f"Unexpected error: {e!r}", exc_info=True)
 
 
 # Configure readline for proper input handling
@@ -247,10 +270,63 @@ def configure_readline() -> None:
     except FileNotFoundError:
         pass
 
-    # Save history on exit
-    import atexit
-
+    # Save history on exit (atexit already imported at the top)
     atexit.register(readline.write_history_file, histfile)
+
+
+# Context manager for agent session
+class AgentSession:
+    """Context manager for handling the agent session lifecycle."""
+
+    def __init__(self, model: OllamaModel, api_key: str, logger: logging.Logger):
+        self.model = model
+        self.api_key = api_key
+        self.logger = logger
+        self.mcp_client: Optional[MCPClient] = None
+        self.agent: Optional[Agent] = None
+
+    def __enter__(self) -> Agent:
+        # Initialize MCP client
+        self.mcp_client = initialize_mcp_client(self.api_key)
+
+        # Enter the MCP client context
+        self.mcp_client.__enter__()
+
+        # Create a conversation manager
+        conversation_manager = SlidingWindowConversationManager(window_size=20)
+
+        # Define system prompt
+        system_prompt = """Get the latest date and time before continuing.
+You are a expert research assistant that can search the internet to provide information and answer questions based on the latest news and data.
+
+        Important:
+        1. Recall the current date and time at the start of each conversation.
+        2. If you cannot find the information, respond with "I don't know" or "I cannot find the information".
+        3. Use the tools at your disposal to gather information and provide accurate answers.
+        4. Be concise and to the point in your responses.
+        5. Cite your sources when providing information from the web.
+        6. Always respond in markdown format for better readability."""
+        
+        print(system_prompt)
+
+        # Create an agent with tools
+        tools = [current_time, shell, self.mcp_client.list_tools_sync()]
+
+        self.agent = Agent(
+            system_prompt=system_prompt,
+            model=self.model,
+            tools=tools,
+            conversation_manager=conversation_manager,
+        )
+
+        if not self.agent:
+            raise RuntimeError("Failed to initialize agent")
+
+        return self.agent
+
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+        if self.mcp_client:
+            self.mcp_client.__exit__(exc_type, exc_val, exc_tb)
 
 
 # Main function
@@ -274,45 +350,16 @@ def main() -> None:
             env["MODEL_ID"], env["TEMPERATURE"], env["OLLAMA_HOST"], env["KEEP_ALIVE"]
         )
 
-        logger.debug(f"Model configuration: {model.config}")
+        logger.debug(f"Model configuration: {repr(model.config)}")
 
-        # Create a conversation manager
-        conversation_manager = SlidingWindowConversationManager(
-            window_size=20,
-        )
-
-        # Define a system prompt for the agent
-        system_prompt = """You are a helpful research assistant that can search the internet to provide information and answer questions based on the latest news and data.
-
-        Important:
-        1. Get the latest date and time before continuing.
-        2. Always respond in markdown format for better readability.
-        3. If you cannot find the information, respond with "I don't know" or "I cannot find the information".
-        4. Use the tools at your disposal to gather information and provide accurate answers.
-        5. Be concise and to the point in your responses.
-        6. Cite your sources when providing information from the web.
-        """
-
-        # Initialize MCP client
-        streamable_http_mcp_client = initialize_mcp_client(env["TAVILY_API_KEY"])
-
-        with streamable_http_mcp_client:
-            # Create an agent with these tools
-            tools = [current_time, shell, streamable_http_mcp_client.list_tools_sync()]
-
-            agent = Agent(
-                system_prompt=system_prompt,
-                model=model,
-                tools=tools,
-                conversation_manager=conversation_manager,
-            )
-
+        # Use context manager for agent session
+        with AgentSession(model, env["TAVILY_API_KEY"], logger) as agent:
             # Run the interactive loop
             run_interactive_loop(agent, logger)
 
     except Exception as e:
-        logger.critical(f"Fatal error: {str(e)}", exc_info=True)
-        print(f"{TermColors.RED}Fatal error: {str(e)}{TermColors.RESET}")
+        logger.critical(f"Fatal error: {e!r}", exc_info=True)
+        print(f"{TermColors.RED}Fatal error: {e!s}{TermColors.RESET}")
         sys.exit(1)
 
 
