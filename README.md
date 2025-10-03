@@ -5,23 +5,56 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 ## System Architecture
 
 ```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground': '#ffffff', 'primaryColor': '#e7effe', 'primaryBorderColor': '#cccccc', 'secondaryBorderColor': '#cccccc', 'tertiaryBorderColor': '#cccccc', 'mainBkg': '#ffffff' }}}%%
-flowchart TD
-    %% Local Resources
-    User[User] -->|Query| Terminal[Terminal Interface]
-    Terminal -->|Input| Agent[Strands Agent]
-    Agent -->|Prompt| Ollama[Ollama]
-    Ollama -->|Loads| Qwen3[Qwen3 Model]
-    Agent -->|Tool Call| MCPClient[MCP Client]
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#e7effe',
+      'primaryTextColor': '#333',
+      'primaryBorderColor': '#333',
+      'lineColor': '#333',
+      'secondaryColor': '#fff',
+      'tertiaryColor': '#fff',
+      'fontFamily': 'arial',
+      'background': '#fff'
+    }
+  }
+}%%
 
-    %% Remote Resources (colored differently)
-    MCPClient -->|API Request| TavilyMCP[Tavily MCP Server]:::remoteResource
-    TavilyMCP -->|API Request| TavilyAPI[Tavily API]:::remoteResource
-    TavilyAPI -->|Web Search| Internet((Internet)):::remoteResource
+flowchart TD
+    %% Force background color using HTML-like styling
+    classDef bg fill:#ffffff
+
+    %% Create invisible background node covering the whole area
+    bg[" "]:::bg
+    style bg fill:#ffffff,stroke:none,color:#ffffff
+
+    %% Local Resources (use specific coloring)
+    classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
+    User[User]:::localResource
+    Terminal[Terminal Interface]:::localResource
+    Agent[Strands Agent]:::localResource
+    Ollama[Ollama]:::localResource
+    Qwen3[Qwen3 Model]:::localResource
+    MCPClient[MCP Client]:::localResource
+
+    %% Remote Resources (use specific coloring)
+    classDef remoteResource fill:#f9d0c4,stroke:#333,stroke-width:1px
+    TavilyMCP[Tavily MCP Server]:::remoteResource
+    TavilyAPI[Tavily API]:::remoteResource
+    Internet((Internet)):::remoteResource
+
+    %% Flow connections
+    User -->|Query| Terminal
+    Terminal -->|Input| Agent
+    Agent -->|Prompt| Ollama
+    Ollama -->|Loads| Qwen3
+    Agent -->|Tool Call| MCPClient
+    MCPClient -->|API Request| TavilyMCP
+    TavilyMCP -->|API Request| TavilyAPI
+    TavilyAPI -->|Web Search| Internet
     Internet -->|Search Results| TavilyAPI
     TavilyAPI -->|Search Results| TavilyMCP
-
-    %% Continue flow
     TavilyMCP -->|Search Results| MCPClient
     MCPClient -->|Tool Response| Agent
     Qwen3 -->|Response| Ollama
@@ -29,13 +62,7 @@ flowchart TD
     Agent -->|Final Answer| Terminal
     Terminal -->|Output| User
 
-    %% Style definitions
-    classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
-    classDef remoteResource fill:#f9d0c4,stroke:#333,stroke-width:1px
-
-    %% Apply local resource style to all nodes by default
-    class User,Terminal,Agent,Ollama,Qwen3,MCPClient localResource
-
+    %% Style for all connections
     linkStyle default stroke:#333,stroke-width:1px,font-size:12px
 
     %% Legend at the bottom of the diagram
