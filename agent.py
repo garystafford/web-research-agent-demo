@@ -285,13 +285,12 @@ def main() -> None:
         system_prompt = """You are a helpful research assistant that can search the internet to provide information and answer questions based on the latest news and data.
 
         Important:
-        1. Always check the latest date and time before providing time-sensitive information.
+        1. Get the latest date and time before continuing.
         2. Always respond in markdown format for better readability.
         3. If you cannot find the information, respond with "I don't know" or "I cannot find the information".
-        4. If you are unsure about the information, indicate your uncertainty in your response.
-        5. Use the tools at your disposal to gather information and provide accurate answers.
-        6. Be concise and to the point in your responses.
-        7. Cite your sources when providing information from the web.
+        4. Use the tools at your disposal to gather information and provide accurate answers.
+        5. Be concise and to the point in your responses.
+        6. Cite your sources when providing information from the web.
         """
 
         # Initialize MCP client
