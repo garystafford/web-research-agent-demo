@@ -1,6 +1,6 @@
 [project]
 name = "web-research-agent-demo"
-version = "0.2.0"
+version = "0.3.0"
 description = "Web-based research agent using Amazon Web Services Strands Agents, Ollama running Qwen3, and Tavily MCP Server."
 authors = [{ name = "Gary Stafford", email = "gary.a.stafford@gmail.com" }]
 readme = "README.md"

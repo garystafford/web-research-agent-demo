@@ -6,6 +6,18 @@ The post [Build a Free Web Research Agent with Strands Agents, Ollama, Qwen3, an
 
 ![Search Example](./previews/search_example_02.png)
 
+## Quick Start
+
+**TL;DR**: The fastest option to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the command below. You can also override the model used by the agent.
+
+```bash
+docker run -it --rm \
+  -e MODEL_ID=qwen3:14b \
+  -e TAVILY_API_KEY=<YOUR_TAVILY_API_KEY> \
+  garystafford/web-research-agent:latest
+```
+
+
 ## Featured Technologies
 
 - **[Model Context Protocol (MCP)](https://github.com/modelcontextprotocol)** is an open standard that enables AI systems to interact with diverse data sources and tools, allowing for secure, two-way connections.
@@ -95,6 +107,14 @@ This project assumes you already have Ollama installed.
 ollama pull qwen3:14b # and/or other parameter sizes
 ```
 
+### Tavily API Key
+
+Create a free [Tavily](https://www.tavily.com/) account to get your API key. Update the `.env` file with your API key.
+
+```bash
+mv env.txt .env # update values
+```
+
 ### GitHub Repository
 
 Clone this project's GitHub repository.
@@ -103,14 +123,6 @@ Clone this project's GitHub repository.
 git clone https://github.com/garystafford/web-research-agent-demo.git
 
 cd web-research-agent-demo/
-```
-
-### Tavily API Key
-
-Create a free [Tavily](https://www.tavily.com/) account to get your API key. Update the `.env` file with your API key.
-
-```bash
-mv env.txt .env # update values
 ```
 
 ### Configure Python Environment
@@ -149,13 +161,22 @@ make run
 
 ## Docker
 
-You can also run the project using [Docker](https://www.docker.com/). Assuming you have Docker installed, first, build the Docker image.
+**TL;DR**: The fastest way to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the command below. You can also override the model used by the agent.
+
+```bash
+docker run -it --rm \
+  -e MODEL_ID=qwen3:14b \
+  -e TAVILY_API_KEY=<YOUR_TAVILY_API_KEY> \
+  garystafford/web-research-agent:latest
+```
+
+You can also build your own [Docker](https://www.docker.com/) image. Assuming you have Docker installed, build the Docker image.
 
 ```bash
 docker buildx build -t web-research-agent .
 ```
 
-Then, run the Docker container. Be sure to include your Tavily API key. You can also override the model used by the agent.
+Then, use the Docker image to run a Docker container. Be sure to include your Tavily API key in the command below. You can also override the model used by the agent.
 
 ```bash
 docker run -it --rm \

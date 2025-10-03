@@ -26,10 +26,7 @@ format:
 lint:
 	$(UVX) flake8 *.py
 	$(UVX) mypy --ignore-missing-imports *.py
-
-# Run tests
-test:
-	$(UVX) pytest
+	#$(UVX) pylint *.py
 
 # Install dependencies
 install:
