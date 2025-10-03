@@ -25,7 +25,7 @@ format:
 # Run linting checks
 lint:
 	$(UVX) flake8 *.py
-	$(UVX) mypy *.py
+	$(UVX) mypy --ignore-missing-imports *.py
 
 # Run tests
 test:

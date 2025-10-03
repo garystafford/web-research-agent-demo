@@ -166,7 +166,7 @@ def format_response(response: Any, logger: logging.Logger) -> str:
 def setup_signal_handlers() -> None:
     """Set up signal handlers for graceful shutdown."""
 
-    def signal_handler(sig, frame) -> None:
+    def signal_handler(sig: int, frame: Any) -> None:
         print(
             f"\n\n{TermColors.YELLOW}Received signal {sig}. Shutting down gracefully...{TermColors.RESET}"
         )
