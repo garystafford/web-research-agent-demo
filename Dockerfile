@@ -12,11 +12,12 @@ ENV UV_SYSTEM_PYTHON=1 UV_COMPILE_BYTECODE=1
 # Copy project files
 COPY . .
 
+# Install dependencies
 RUN uv venv
 RUN uv sync --no-dev --no-cache
 
 # Set environment variables - can be overridden with docker run -e
-ENV MODEL_ID="qwen3:30b" \
+ENV MODEL_ID="qwen3:14b" \
     TEMPERATURE="0.2" \
     BYPASS_TOOL_CONSENT="True" \
     OLLAMA_HOST="http://host.docker.internal:11434" \

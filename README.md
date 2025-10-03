@@ -155,7 +155,7 @@ You can also run the project using [Docker](https://www.docker.com/). Assuming y
 docker buildx build -t web-research-agent .
 ```
 
-Then, run the Docker container. Be sure to include your Tavily API key.
+Then, run the Docker container. Be sure to include your Tavily API key. You can also override the model used by the agent.
 
 ```bash
 docker run -it --rm \
