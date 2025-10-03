@@ -149,18 +149,19 @@ make run
 
 ### Docker
 
-You can also run the project using Docker. First, build the Docker image.
+You can also run the project using [Docker](https://www.docker.com/). Assuming you have Docker installed, first, build the Docker image.
 
 ```bash
-docker buildx build -t web-research-agent:1.0.0 .
+docker buildx build \
+  -t web-research-agent:1.0.0 .
 ```
 
-Then, run the Docker container.
+Then, run the Docker container. Be sure to include your Tavily API key.
 
 ```bash
 docker run -it --rm \
-  -e TAVILY_API_KEY=your-api-key \
-  web-research-agent:1.0.0                                
+  -e TAVILY_API_KEY=<YOUR-API-KEY> \
+  web-research-agent:1.0.0
 ```
 
 ### Example Prompts
