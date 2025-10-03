@@ -147,7 +147,7 @@ make upgrade
 make run
 ```
 
-### Docker
+## Docker
 
 You can also run the project using [Docker](https://www.docker.com/). Assuming you have Docker installed, first, build the Docker image.
 
@@ -164,7 +164,7 @@ docker run -it --rm \
   web-research-agent
 ```
 
-### Example Prompts
+## Example Prompts
 
 Try these example prompts:
 
@@ -177,7 +177,7 @@ Try these example prompts:
 - "_What are the recent breakthroughs in cancer research?_"
 - "_Summarize the main points from this scientific paper: https://arxiv.org/html/1706.03762v7_"
 
-### Troubleshooting
+## Troubleshooting
 
 If you encounter issues, consider the following:
 
