@@ -19,6 +19,7 @@ Here is a high-level architecture flow diagram, using [Mermaid.js](https://merma
 %%{
   init: {
     'theme': 'base',
+    'defaultRenderer': 'elk',
     'themeVariables': {
       'primaryColor': '#e7effe',
       'primaryTextColor': '#333',
@@ -32,7 +33,7 @@ Here is a high-level architecture flow diagram, using [Mermaid.js](https://merma
   }
 }%%
 
-flowchart LR
+flowchart RL
     style System fill:#fff,stroke:#fff,stroke-width:0px
     subgraph System[ ]
         %% Local Resources (use specific coloring)
@@ -40,6 +41,7 @@ flowchart LR
         User[User]:::localResource
         Terminal[Terminal Interface]:::localResource
         Agent[Strands Agent]:::localResource
+        Memory[Conversational Memory]:::localResource
         Ollama[Ollama]:::localResource
         Qwen3[Qwen3 Model]:::localResource
         MCPClient[MCP Client]:::localResource
@@ -51,8 +53,10 @@ flowchart LR
         Internet((Internet)):::remoteResource
 
         %% Flow connections
-        User -->|Query| Terminal
-        Terminal -->|Input| Agent
+        User -->|Prompt| Terminal
+        Terminal -->|Prompt| Agent
+        Agent -->|Store/Retrieve| Memory
+        Memory -->|Context| Agent
         Agent -->|Prompt| Ollama
         Ollama -->|Loads| Qwen3
         Agent -->|Tool Call| MCPClient
@@ -65,11 +69,9 @@ flowchart LR
         MCPClient -->|Tool Response| Agent
         Qwen3 -->|Response| Ollama
         Ollama -->|Response| Agent
-        Agent -->|Final Answer| Terminal
-        Terminal -->|Output| User
+        Agent -->|Response| Terminal
 
         %% Style for all connections
-        linkStyle default stroke:#333,stroke-width:1px,font-size:12px
         %% Legend
         subgraph Legend
             style Legend fill:none,stroke:#fff,stroke-width:0px
