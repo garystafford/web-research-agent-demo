@@ -28,7 +28,7 @@ docker run -it --rm \
 
 ## System Architecture
 
-Here is a high-level architecture flow diagram, using [Mermaid.js](https://mermaid.js.org/intro/), of this project.
+Here is a high-level architecture flow diagram of the project, using [Mermaid.js](https://mermaid.js.org/intro/).
 
 ```mermaid
 %%{
