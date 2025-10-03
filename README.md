@@ -2,6 +2,10 @@
 
 The post [Build a Free Web Research Agent with Strands Agents, Ollama, Qwen3, and the Tavily MCP Server](https://garystafford.medium.com/build-a-web-research-agent-with-strands-agents-ollama-qwen3-and-the-tavily-mcp-server-8e1a1baf0f0d) guides you through building a web-based research agent using Amazon Web Services' Strands Agents, Ollama running Alibaba Cloud's Qwen3, and the Tavily MCP Server. The agent combines local, small models with cloud-powered web search, enabling it to provide up-to-date, high-quality online information. The agent is free to get started, offering 1,000 monthly API calls with Tavily.
 
+![Search Example](./previews/search_example_01.png)
+
+![Search Example](./previews/search_example_02.png)
+
 ## Featured Technologies
 
 - **[Model Context Protocol (MCP)](https://github.com/modelcontextprotocol)** is an open standard that enables AI systems to interact with diverse data sources and tools, allowing for secure, two-way connections.
