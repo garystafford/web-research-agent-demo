@@ -8,7 +8,7 @@ The post [Build a Free Web Research Agent with Strands Agents, Ollama, Qwen3, an
 
 ## Quick Start
 
-**TL;DR**: The fastest option to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the command below. You can also override the model used by the agent.
+**TL;DR**: The fastest option to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the `docker run` command below. You can also override the model used by the agent.
 
 ```bash
 docker run -it --rm \
@@ -16,7 +16,6 @@ docker run -it --rm \
   -e TAVILY_API_KEY=<YOUR_TAVILY_API_KEY> \
   garystafford/web-research-agent:latest
 ```
-
 
 ## Featured Technologies
 
@@ -161,7 +160,7 @@ make run
 
 ## Docker
 
-**TL;DR**: The fastest way to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the command below. You can also override the model used by the agent.
+**TL;DR**: The fastest way to get started is to use the pre-made Docker image, `garystafford/web-research-agent:latest`. Be sure to include your Tavily API key in the `docker run` command below. You can also override the model used by the agent.
 
 ```bash
 docker run -it --rm \
