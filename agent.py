@@ -155,8 +155,8 @@ def format_response(response: Any, logger: logging.Logger) -> str:
         response_text = response.message["content"][0]["text"]
         # Remove the thinking part if it exists (content after </think>)
         if "</think>" in response_text:
-            return response_text.split("</think>\n\n")[-1]
-        return response_text
+            return str(response_text.split("</think>\n\n")[-1])
+        return str(response_text)
     except (KeyError, IndexError) as e:
         logger.warning(f"Error formatting response: {e}")
         return "Sorry, I couldn't process that response correctly."
@@ -166,7 +166,7 @@ def format_response(response: Any, logger: logging.Logger) -> str:
 def setup_signal_handlers() -> None:
     """Set up signal handlers for graceful shutdown."""
 
-    def signal_handler(sig, frame):
+    def signal_handler(sig, frame) -> None:
         print(
             f"\n\n{TermColors.YELLOW}Received signal {sig}. Shutting down gracefully...{TermColors.RESET}"
         )
@@ -283,7 +283,7 @@ def main() -> None:
 
         # Define a system prompt for the agent
         system_prompt = """You are a helpful research assistant that can search the internet to provide information and answer questions based on the latest news and data.
-        
+
         Important:
         1. Always check the latest date and time before providing time-sensitive information.
         2. Always respond in markdown format for better readability.
