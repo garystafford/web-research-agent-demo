@@ -4,7 +4,7 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 
 ## System Architecture
 
-![Architecture](./diagram.png)
+Here is a high-level architecture flow diagram.
 
 ```mermaid
 %%{
@@ -24,8 +24,8 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 }%%
 
 flowchart LR
-    style System fill:#fff,stroke:#fff,stroke-width:0px,font-weight:bold
-    subgraph System
+    style System fill:#fff,stroke:#fff,stroke-width:0px
+    subgraph System[ ]
         %% Local Resources (use specific coloring)
         classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
         User[User]:::localResource
