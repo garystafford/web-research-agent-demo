@@ -7,16 +7,21 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 ```mermaid
 %%{init: {'theme': 'base', 'themeVariables': { 'edgeLabelBackground': '#ffffff', 'primaryColor': '#e7effe' }}}%%
 flowchart TD
+    %% Local Resources
     User[User] -->|Query| Terminal[Terminal Interface]
     Terminal -->|Input| Agent[Strands Agent]
     Agent -->|Prompt| Ollama[Ollama]
     Ollama -->|Loads| Qwen3[Qwen3 Model]
     Agent -->|Tool Call| MCPClient[MCP Client]
-    MCPClient -->|API Request| TavilyMCP[Tavily MCP Server]
-    TavilyMCP -->|API Request| TavilyAPI[Tavily API]
-    TavilyAPI -->|Web Search| Internet((Internet))
+
+    %% Remote Resources (colored differently)
+    MCPClient -->|API Request| TavilyMCP[Tavily MCP Server]:::remoteResource
+    TavilyMCP -->|API Request| TavilyAPI[Tavily API]:::remoteResource
+    TavilyAPI -->|Web Search| Internet((Internet)):::remoteResource
     Internet -->|Search Results| TavilyAPI
     TavilyAPI -->|Search Results| TavilyMCP
+
+    %% Continue flow
     TavilyMCP -->|Search Results| MCPClient
     MCPClient -->|Tool Response| Agent
     Qwen3 -->|Response| Ollama
@@ -24,7 +29,20 @@ flowchart TD
     Agent -->|Final Answer| Terminal
     Terminal -->|Output| User
 
+    %% Style definitions
+    classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
+    classDef remoteResource fill:#f9d0c4,stroke:#333,stroke-width:1px
+
+    %% Apply local resource style to all nodes by default
+    class User,Terminal,Agent,Ollama,Qwen3,MCPClient localResource
+
     linkStyle default stroke:#333,stroke-width:1px,font-size:12px
+
+    %% Legend at the bottom of the diagram
+    subgraph Legend
+        LocalRes[Local Resources]:::localResource
+        RemoteRes[Remote Resources]:::remoteResource
+    end
 ```
 
 ## Featured Technologies
@@ -97,6 +115,34 @@ make upgrade
 ```bash
 make run
 ```
+
+### Example Prompts
+
+Try these example prompts:
+
+- "What are the latest advancements in renewable energy technologies?"
+- "Summarize the key points from a recent articles about AI ethics."
+- "Find recent news about space exploration missions."
+- "What are the current trends in remote work and its impact on productivity?"
+- "Provide a summary of recent developments in electric vehicle technology."
+- "What is some of the latest technology news out of NVIDIA?"
+- "What are the recent breakthroughs in cancer research?"
+- "Summarize the main points from this scientific paper: https://arxiv.org/html/1706.03762v7"
+
+### Troubleshooting
+
+If you encounter issues, consider the following:
+
+- Ensure Ollama is running and the specified model is downloaded.
+- Verify your Tavily API key is correct and has not exceeded the free tier limit.
+- Check your internet connection for accessing the Tavily API.
+- Review the `.env` file for correct environment variable settings.
+- Look for error messages in the terminal output to identify specific problems.
+- Consult the documentation for Strands Agents, Ollama, and Tavily for additional help.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
