@@ -12,8 +12,8 @@ ENV UV_SYSTEM_PYTHON=1 UV_COMPILE_BYTECODE=1
 # Copy project files
 COPY . .
 
-RUN uv venv .venv
-RUN uv sync
+RUN uv venv
+RUN uv sync --no-dev --no-cache
 
 # Set environment variables - can be overridden with docker run -e
 ENV MODEL_ID="qwen3:30b" \
@@ -23,12 +23,8 @@ ENV MODEL_ID="qwen3:30b" \
     KEEP_ALIVE="10m" \
     LOG_LEVEL="WARNING"
 
-# Expose Ollama port (only needed if running Ollama within this container)
-# EXPOSE 11434
-
 # Switch to the 'appuser' for subsequent instructions and container runtime
 USER appuser
-
 
 # Run the agent
 CMD ["uv", "run", "agent.py"]

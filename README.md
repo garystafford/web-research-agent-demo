@@ -152,15 +152,15 @@ make run
 You can also run the project using [Docker](https://www.docker.com/). Assuming you have Docker installed, first, build the Docker image.
 
 ```bash
-docker buildx build \
-  -t web-research-agent:1.0.0 .
+docker buildx build -t web-research-agent:1.0.0 .
 ```
 
 Then, run the Docker container. Be sure to include your Tavily API key.
 
 ```bash
 docker run -it --rm \
-  -e TAVILY_API_KEY=<YOUR-API-KEY> \
+  -e MODEL_ID="qwen3:30b" \
+  -e TAVILY_API_KEY=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 \
   web-research-agent:1.0.0
 ```
 
@@ -171,9 +171,9 @@ Try these example prompts:
 - "_What are the latest advancements in renewable energy technologies?_"
 - "_Summarize the key points from a recent articles about AI ethics._"
 - "_Find recent news about space exploration missions._"
-- "_What are the current trends in remote work and its impact on productivity?_"
+- "_What is a perceptron? Why is it important to the evolution of machine learning?_"
 - "_Provide a summary of recent developments in electric vehicle technology._"
-- "_What is some of the latest technology news out of NVIDIA?_"
+- "_What is some of the latest technology news out of NVIDIA in the last month?_"
 - "_What are the recent breakthroughs in cancer research?_"
 - "_Summarize the main points from this scientific paper: https://arxiv.org/html/1706.03762v7_"
 

@@ -228,7 +228,7 @@ def run_interactive_loop(agent: Agent, logger: logging.Logger) -> None:
             print(f"\n{TermColors.GREEN}{formatted_response}{TermColors.RESET}")
 
             # Log metrics at debug level using repr for complex objects
-            logger.debug(f"Agent metrics: {repr(response.metrics)}")
+            logger.info(f"Agent metrics: {repr(response.metrics)}")
 
         except KeyboardInterrupt:
             print(
@@ -296,16 +296,15 @@ class AgentSession:
         conversation_manager = SlidingWindowConversationManager(window_size=20)
 
         # Define system prompt
-        system_prompt = """Get the latest date and time before continuing.
+        system_prompt = """Get the latest date and time before starting starting your answer.
 You are a expert research assistant that can search the internet to provide information and answer questions based on the latest news and data.
 
         Important:
-        1. Recall the current date and time at the start of each conversation.
-        2. If you cannot find the information, respond with "I don't know" or "I cannot find the information".
-        3. Use the tools at your disposal to gather information and provide accurate answers.
-        4. Be concise and to the point in your responses.
-        5. Cite your sources when providing information from the web.
-        6. Always respond in markdown format for better readability."""
+        1. If you cannot find the information, respond with "I don't know" or "I cannot find the information".
+        2. Use the tools at your disposal to gather information and provide accurate answers.
+        3. Be concise and to the point in your responses.
+        4. Cite your sources when providing information from the web.
+        5. Always respond in markdown format for better readability."""
         
         # Create an agent with tools
         tools = [current_time, shell, self.mcp_client.list_tools_sync()]
