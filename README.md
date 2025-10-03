@@ -4,6 +4,8 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
 
 ## System Architecture
 
+![Architecture](./diagram.png)
+
 ```mermaid
 %%{
   init: {
@@ -21,54 +23,50 @@ The post [Build a Web Research Agent with Strands Agents, Ollama, Qwen3, and the
   }
 }%%
 
-flowchart TD
-    %% Force background color using HTML-like styling
-    classDef bg fill:#ffffff
+flowchart LR
+    style System fill:#fff,stroke:#fff,stroke-width:0px,font-weight:bold
+    subgraph System
+        %% Local Resources (use specific coloring)
+        classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
+        User[User]:::localResource
+        Terminal[Terminal Interface]:::localResource
+        Agent[Strands Agent]:::localResource
+        Ollama[Ollama]:::localResource
+        Qwen3[Qwen3 Model]:::localResource
+        MCPClient[MCP Client]:::localResource
 
-    %% Create invisible background node covering the whole area
-    bg[" "]:::bg
-    style bg fill:#ffffff,stroke:none,color:#ffffff
+        %% Remote Resources (use specific coloring)
+        classDef remoteResource fill:#f9d0c4,stroke:#333,stroke-width:1px
+        TavilyMCP[Tavily MCP Server]:::remoteResource
+        TavilyAPI[Tavily API]:::remoteResource
+        Internet((Internet)):::remoteResource
 
-    %% Local Resources (use specific coloring)
-    classDef localResource fill:#e7effe,stroke:#333,stroke-width:1px
-    User[User]:::localResource
-    Terminal[Terminal Interface]:::localResource
-    Agent[Strands Agent]:::localResource
-    Ollama[Ollama]:::localResource
-    Qwen3[Qwen3 Model]:::localResource
-    MCPClient[MCP Client]:::localResource
+        %% Flow connections
+        User -->|Query| Terminal
+        Terminal -->|Input| Agent
+        Agent -->|Prompt| Ollama
+        Ollama -->|Loads| Qwen3
+        Agent -->|Tool Call| MCPClient
+        MCPClient -->|API Request| TavilyMCP
+        TavilyMCP -->|API Request| TavilyAPI
+        TavilyAPI -->|Web Search| Internet
+        Internet -->|Search Results| TavilyAPI
+        TavilyAPI -->|Search Results| TavilyMCP
+        TavilyMCP -->|Search Results| MCPClient
+        MCPClient -->|Tool Response| Agent
+        Qwen3 -->|Response| Ollama
+        Ollama -->|Response| Agent
+        Agent -->|Final Answer| Terminal
+        Terminal -->|Output| User
 
-    %% Remote Resources (use specific coloring)
-    classDef remoteResource fill:#f9d0c4,stroke:#333,stroke-width:1px
-    TavilyMCP[Tavily MCP Server]:::remoteResource
-    TavilyAPI[Tavily API]:::remoteResource
-    Internet((Internet)):::remoteResource
-
-    %% Flow connections
-    User -->|Query| Terminal
-    Terminal -->|Input| Agent
-    Agent -->|Prompt| Ollama
-    Ollama -->|Loads| Qwen3
-    Agent -->|Tool Call| MCPClient
-    MCPClient -->|API Request| TavilyMCP
-    TavilyMCP -->|API Request| TavilyAPI
-    TavilyAPI -->|Web Search| Internet
-    Internet -->|Search Results| TavilyAPI
-    TavilyAPI -->|Search Results| TavilyMCP
-    TavilyMCP -->|Search Results| MCPClient
-    MCPClient -->|Tool Response| Agent
-    Qwen3 -->|Response| Ollama
-    Ollama -->|Response| Agent
-    Agent -->|Final Answer| Terminal
-    Terminal -->|Output| User
-
-    %% Style for all connections
-    linkStyle default stroke:#333,stroke-width:1px,font-size:12px
-
-    %% Legend at the bottom of the diagram
-    subgraph Legend
-        LocalRes[Local Resources]:::localResource
-        RemoteRes[Remote Resources]:::remoteResource
+        %% Style for all connections
+        linkStyle default stroke:#333,stroke-width:1px,font-size:12px
+        %% Legend
+        subgraph Legend
+            style Legend fill:none,stroke:#fff,stroke-width:0px
+            LocalRes[Local Resources]:::localResource
+            RemoteRes[Remote Resources]:::remoteResource
+        end
     end
 ```
 
