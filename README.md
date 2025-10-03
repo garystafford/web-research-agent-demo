@@ -151,14 +151,14 @@ make run
 
 Try these example prompts:
 
-- "What are the latest advancements in renewable energy technologies?"
-- "Summarize the key points from a recent articles about AI ethics."
-- "Find recent news about space exploration missions."
-- "What are the current trends in remote work and its impact on productivity?"
-- "Provide a summary of recent developments in electric vehicle technology."
-- "What is some of the latest technology news out of NVIDIA?"
-- "What are the recent breakthroughs in cancer research?"
-- "Summarize the main points from this scientific paper: https://arxiv.org/html/1706.03762v7"
+- "_What are the latest advancements in renewable energy technologies?_"
+- "_Summarize the key points from a recent articles about AI ethics._"
+- "_Find recent news about space exploration missions._"
+- "_What are the current trends in remote work and its impact on productivity?_"
+- "_Provide a summary of recent developments in electric vehicle technology._"
+- "_What is some of the latest technology news out of NVIDIA?_"
+- "_What are the recent breakthroughs in cancer research?_"
+- "_Summarize the main points from this scientific paper: https://arxiv.org/html/1706.03762v7_"
 
 ### Troubleshooting
 
