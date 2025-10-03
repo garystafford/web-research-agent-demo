@@ -1,4 +1,3 @@
-# linux/amd64 version for ECS: https://github.com/astral-sh/uv/pkgs/container/uv/520833613?tag=python3.13-bookworm-slim
 FROM ghcr.io/astral-sh/uv:0.8.19-python3.13-bookworm-slim
 
 # Create a non-root user named 'appuser'
