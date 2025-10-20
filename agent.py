@@ -262,7 +262,8 @@ def configure_readline() -> None:
     readline.parse_and_bind("tab: complete")
 
     # Set up history file
-    histfile = os.path.join(os.path.expanduser("~"), ".search_agent_history")
+    histfile = os.path.join(os.path.expanduser("/tmp/"), ".search_agent_history")
+    print(f"History file: {histfile}")
     try:
         readline.read_history_file(histfile)
         # Default history length
