@@ -79,7 +79,7 @@ def load_environment_variables() -> EnvVars:
     # Define defaults and type conversion functions
     model_id = os.getenv("MODEL_ID", "qwen3:14b")
     temperature = float(os.getenv("TEMPERATURE", "0.2"))
-    tavily_api_key = os.getenv("TAVILY_API_KEY", "")
+    tavily_api_key = os.getenv("TAVILY_API_KEY")
     ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     keep_alive = os.getenv("KEEP_ALIVE", "10m")
 
@@ -262,17 +262,17 @@ def configure_readline() -> None:
     readline.parse_and_bind("tab: complete")
 
     # Set up history file
-    histfile = os.path.join(os.path.expanduser("/tmp/"), ".search_agent_history")
-    print(f"History file: {histfile}")
+    history_file = os.path.join(os.path.expanduser("/tmp/"), ".search_agent_history")
+    print(f"History file: {history_file}")
     try:
-        readline.read_history_file(histfile)
+        readline.read_history_file(history_file)
         # Default history length
         readline.set_history_length(1000)
     except FileNotFoundError:
         pass
 
     # Save history on exit (atexit already imported at the top)
-    atexit.register(readline.write_history_file, histfile)
+    atexit.register(readline.write_history_file, history_file)
 
 
 # Context manager for agent session
@@ -329,7 +329,7 @@ You are a expert research assistant that can search the internet to provide info
 
 # Main function
 def main() -> None:
-    """Main entry point of the application."""
+    """Main entry point of the application."""                                              
     # Setup signal handlers for graceful shutdown
     setup_signal_handlers()
 
